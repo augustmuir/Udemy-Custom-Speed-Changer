@@ -21,6 +21,9 @@
 			"js": ["injector.js", "injectee.js"],
 			"run_at": "document_end"
 		}
-
-	]
+	],
+	"icons": {
+		"16": "media/icon16.png",
+	  "48": "media/icon48.png",
+		"128": "media/icon128.png",
 }

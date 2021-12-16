@@ -5,7 +5,7 @@ This is a chrome extension which allows you to set any custom speed(s) for Udemy
 To Install: [Open in Chrome Webstore](TODO)
 
 
-![Screenshot](/screenshot.jpg)
+![Screenshot](/media/screenshot.jpg)
 
 If you're curious how it works:
 
