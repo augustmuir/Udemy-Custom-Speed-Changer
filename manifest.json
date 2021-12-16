@@ -1,0 +1,26 @@
+{
+	"name": "Udemy Custom Speed Changer",
+	"description": "Change Udemy's video player to allow any custom speed.",
+	"version": "1.0",
+	"options_page": "options.html",
+	"manifest_version": 2,
+	"permissions": [
+		 "webRequest",
+		 "webRequestBlocking",
+		 "https://*.udemy.com/*",
+		 "storage"
+	],
+	"web_accessible_resources": ["course-taking-app.udemyspeedchanger.js", "injector.js", "injectee.js"],
+	"background": {
+		"scripts": ["background.js"],
+		"persistent": true
+	},
+	"content_scripts" : [
+		{
+			"matches": ["https://*.udemy.com/*"],
+			"js": ["injector.js", "injectee.js"],
+			"run_at": "document_end"
+		}
+
+	]
+}
