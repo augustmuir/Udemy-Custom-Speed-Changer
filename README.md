@@ -2,7 +2,7 @@
 
 This is a chrome extension which allows you to set any custom speed(s) for Udemy's video player.
 
-To Install: [Open in Chrome Webstore](TODO)
+To Install: [Open in Chrome Webstore](TODO) (will add URL once Google reviews the extension).
 
 
 ![Screenshot](/media/screenshot.jpg)
