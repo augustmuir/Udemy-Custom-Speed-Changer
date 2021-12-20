@@ -1,4 +1,4 @@
-z# Udemy Custom Speed Changer
+# Udemy Custom Speed Changer
 
 This is a chrome extension which allows you to set any custom speed(s) for Udemy's video player.
 
