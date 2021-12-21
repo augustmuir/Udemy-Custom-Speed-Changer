@@ -7,4 +7,6 @@ To Install: [Open/Install via Chrome Webstore](https://chrome.google.com/webstor
 
 ![Screenshot](/media/screenshot.jpg)
 
-If you're curious how it works: we intercept Udemy's Javascript file "course-taking-app.xxxxxxxxx.js" and replace `Object.freeze([.5,.75,1,1.25,1.5,1.75,2])` with the users custom values. At the core it is very simple, most of this code is just for managing/injecting user options.
+If you're curious how it works: 
+
+Udemy's Javascript file "course-taking-app.xxxxxxxxx.js" is intercepted and this line `Object.freeze([.5,.75,1,1.25,1.5,1.75,2])` is replaced with the users custom values. At the core it is very simple, most of this code is just for managing/injecting user options.
