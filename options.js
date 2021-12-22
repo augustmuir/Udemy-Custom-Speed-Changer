@@ -24,6 +24,7 @@ function init(){
 	});
 }
 
+
 function addSpeedDiv(speed){
 	var singleDiv = document.createElement("div");
 	var singleP = document.createElement("p");
@@ -42,6 +43,7 @@ function addSpeedDiv(speed){
 	document.getElementById("speeds").appendChild(singleDiv);
 }
 
+
 function addSpeed(){
 	var speedInput = document.getElementById("speedInput");
 	var speed = speedInput.value;
@@ -55,6 +57,7 @@ function addSpeed(){
 	}
 }
 
+
 function removeSpeed(speed, singleDiv){
 	singleDiv.remove();
 	var index = speeds.indexOf(speed);
@@ -64,6 +67,7 @@ function removeSpeed(speed, singleDiv){
 	chrome.storage.sync.set({udemyChangerSpeeds: speeds});
 	chrome.storage.local.set({needsRefresh: true});
 }
+
 
 function setDefault() {
 	chrome.storage.sync.set({udemyChangerSpeeds: defaults});

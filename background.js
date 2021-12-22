@@ -4,13 +4,6 @@ This File:
   - redirects all requests to the original file "course-taking-app.xxxxxxx.js" to the new "redirect.js"
 */
 
-/*
-todo:
--add refresh after inital load [DONE]
--code review background.js [DONE]
--ensure user options work good
--in user options set needsRefresh
-*/
 
 async function userSpeeds(){
   var promise = new Promise(function(resolve, reject){
