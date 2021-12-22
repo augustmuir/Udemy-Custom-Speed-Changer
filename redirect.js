@@ -14,7 +14,7 @@ function sleep(milliseconds) {
 
 for(let i = 0; i < 10; i++){
   sleep(100);
-  code = document.getElementsByClassName("main-content-wrapper")[0].getAttribute("data");
+  var code = document.getElementsByClassName("main-content-wrapper")[0].getAttribute("data");
   if(code != null){
       var s = document.createElement("script");
       s.setAttribute("type", "text/javascript");
