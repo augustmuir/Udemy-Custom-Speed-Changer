@@ -1,54 +1,55 @@
 /*
-This File:
-  - creates the modified Udemy javascript file "redirect.js" and injects the users speeds (if needed)
-  - redirects all requests to the original file "course-taking-app.xxxxxxx.js" to the new "redirect.js"
+This file:
+  -loads custom user speeds
+  -intercepts & modifies the original javascript file (course-taking-app.[dynamic].js)
+  -redirects the original javascript file request to injector.js where the modified script is added to the wbepage
 */
 
 
-async function userSpeeds(){
-  var promise = new Promise(function(resolve, reject){
-    chrome.storage.sync.get("udemyChangerSpeeds", async function (d){ resolve(d); });
+async function userSpeeds() {
+  var promise = new Promise(function (resolve, reject) {
+    chrome.storage.sync.get("udemyChangerSpeeds", async function (d) { resolve(d); });
   });
   var data = await promise;
-  if(!data["udemyChangerSpeeds"]){ //first use, set defaults
-    data["udemyChangerSpeeds"] = [0.50, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 5, 7.5, 10, 13, 16];
+  if (!data.udemyChangerSpeeds) { //first use - set defaults and return null to refresh to page
+    data.udemyChangerSpeeds = [0.50, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 5, 7.5, 10, 13, 16];
+    await chrome.storage.sync.set({ "udemyChangerSpeeds": data.udemyChangerSpeeds });
+    return;
   }
-  await chrome.storage.sync.set({"udemyChangerSpeeds": data["udemyChangerSpeeds"]});
-  return data["udemyChangerSpeeds"];
+  return data.udemyChangerSpeeds.toString();
 }
 
 
-async function setJstring(ogUrl){
-  var file = await fetch(ogUrl + "?giveOrig=true"); //marker to bypass redirect
-  var contents = await file.text();
-  var speeds = "[" + (await userSpeeds()).toString() + "]";
-  contents = contents.replace("[.5,.75,1,1.25,1.5,1.75,2]", speeds);
-  await chrome.storage.local.set({jstring: contents, needsRefresh: true});
-}
+chrome.webRequest.onBeforeRequest.addListener(
+  async function (details) {
+    if (details.url.includes("course-taking-app.") && details.url.includes(".js")) {
+      var noCache = Math.floor(Math.random() * 9999).toString();
 
-
-chrome.storage.local.get(["jstring", "needsRefresh"], async function (data) {
-  var jstring = data["jstring"];
-  var jstringValid = !(jstring == undefined || jstring == null);
-  if(data["needsRefresh"]){
-    await userSpeeds();
-    jstringValid = false;
-  }
-  chrome.webRequest.onBeforeRequest.addListener(
-    function(details) {
-      if(details.url.includes("course-taking-app.") && details.url.includes(".js")){
-        if(jstringValid == false){
-          setJstring(details.url)
-          jstringValid = true;
-        }
-        else if(!details.url.includes("?giveOrig=true")){
-          return {redirectUrl: chrome.extension.getURL("redirect.js")}
+      if (details.url.includes("?giveOrig=true")) { // serve original file
+        return { redirectUrl: details.url + "&rnd=" + noCache }
+      }
+      else { // fetch original file and modify it, serve injector.js in it's place.
+        var speeds = await userSpeeds();
+        if (speeds) {
+          var script = await fetch(details.url + "?giveOrig=true" + "&rnd=" + noCache);
+          await chrome.storage.local.set({
+            modifiedScript: (await script.text()).replace("[.5,.75,1,1.25,1.5,1.75,2]", "[" + speeds + "]"),
+            ogScriptSrc: details.url.split('udemy.com')[1],
+            needsRefresh: false
+          });
+          return { redirectUrl: chrome.extension.getURL("injector.js?rnd=" + noCache) }
+        } else {
+          await chrome.storage.local.set({
+            needsRefresh: true
+          });
+          return { redirectUrl: chrome.extension.getURL("injector.js?rnd=" + noCache) }
         }
       }
-    },
-    {
-      urls: ["*://www.udemy.com/*"]
-    },
-    ["blocking"]
-  );
-});
+    }
+  },
+  {
+    urls: ["*://www.udemy.com/*"]
+  },
+  ["blocking"]
+);
+
