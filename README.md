@@ -4,8 +4,8 @@ This is a chrome extension which allows you to set any custom speed(s) for Udemy
 
 To Install: [Open/Install via Chrome Webstore](https://chrome.google.com/webstore/detail/udemy-custom-speed-change/mfinfiagnpnbijihonbeadgnfbihhpcf/), or clone the repo and [load it unpacked](https://developer.chrome.com/docs/extensions/mv3/getstarted/#unpacked).
 
-Note:
--Only supports desktop video player (which shows the current speed on the bottom toolbar near the play button).
+Note:  
+-Only supports desktop video player (which shows the current speed on the bottom toolbar near the play button).  
 -May need a page refresh on first use due to cached files.
 
 
