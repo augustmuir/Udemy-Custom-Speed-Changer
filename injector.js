@@ -6,6 +6,9 @@ The unmodified script will be removed from the head if it exists.
 
 chrome.storage.local.get(["modifiedScript", "ogScriptSrc", "needsRefresh"], async function (data) {
   if(data.needsRefresh){
+    await chrome.storage.local.set({
+      needsRefresh: false
+    });
     location.reload(true);
   }
 

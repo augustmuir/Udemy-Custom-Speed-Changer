@@ -1,27 +1,23 @@
 var speeds = [];
 var defaults = [0.50, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 5, 7.5, 10, 13, 16];
 
+chrome.storage.sync.get("udemyChangerSpeeds", function (data) {
+	var loadedSpeeds = data['udemyChangerSpeeds'];
+	if(loadedSpeeds === undefined) {
+		setDefault();
+	}
+	else {
+		speeds = loadedSpeeds;
+		for(let i = 0; i < loadedSpeeds.length; i++) {
+			addSpeedDiv(loadedSpeeds[i]);
+		}
+	}
+});
+
+
 function init(){
-	window.addEventListener("beforeunload", function(e){
-		speeds.sort(function(a, b) {return a - b;});
-		chrome.storage.sync.set({udemyChangerSpeeds: speeds});
-		chrome.storage.local.set({needsRefresh: true});
-	 	chrome.runtime.reload();
-	}, false);
 	document.getElementById("addButton").onclick = function() { addSpeed(); }
-	document.getElementById("restoreButton").onclick = function() { setDefault(); }
-	chrome.storage.sync.get("udemyChangerSpeeds", function (data) {
-		var loadedSpeeds = data['udemyChangerSpeeds'];
-		if(loadedSpeeds === undefined) {
-			setDefault();
-		}
-		else {
-			speeds = loadedSpeeds;
-			for(let i = 0; i < loadedSpeeds.length; i++) {
-				addSpeedDiv(loadedSpeeds[i]);
-			}
-		}
-	});
+	document.getElementById("restoreButton").onclick = function() { setDefault(); }	
 }
 
 
@@ -44,16 +40,18 @@ function addSpeedDiv(speed){
 }
 
 
-function addSpeed(){
+async function addSpeed(){
 	var speedInput = document.getElementById("speedInput");
 	var speed = speedInput.value;
 	if(speed != undefined && speed != null && speed.toString().length > 0)
 	{
-		speeds.push(speed);
+		
 		addSpeedDiv(speed);
+		speeds.push(speed);
 		speedInput.value = null;
-		chrome.storage.sync.set({udemyChangerSpeeds: speeds});
-		chrome.storage.local.set({needsRefresh: true});
+		speeds.sort(function(a, b) {return a - b;});
+		await chrome.storage.sync.set({udemyChangerSpeeds: speeds});
+		await chrome.storage.local.set({needsRefresh: true});
 	}
 }
 
@@ -69,10 +67,10 @@ function removeSpeed(speed, singleDiv){
 }
 
 
-function setDefault() {
-	chrome.storage.sync.set({udemyChangerSpeeds: defaults});
-	chrome.storage.local.set({needsRefresh: true});
-	location.reload();
+async function setDefault() {
+	await chrome.storage.sync.set({udemyChangerSpeeds: defaults});
+	await chrome.storage.local.set({needsRefresh: true});
+	alert("Default speeds set!\nPage refresh needed!\n(CTRL + R)");
 }
 
 
