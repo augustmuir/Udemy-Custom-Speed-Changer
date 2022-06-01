@@ -22,7 +22,7 @@ async function userSpeeds() {
 
 chrome.webRequest.onBeforeRequest.addListener(
   async function (details) {
-    if (details.url.includes("course-taking-app.") && details.url.includes(".js")) {
+    if ((details.url.includes("course-taking-app.") || details.url.includes("course-taking-udlite-app.")) && details.url.includes(".js")) {
       var noCache = Math.floor(Math.random() * 9999).toString();
 
       if (details.url.includes("?giveOrig=true")) { // serve original file
