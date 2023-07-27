@@ -48,7 +48,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     }
   },
   {
-    urls: ["*://www.udemy.com/*"]
+    urls: ["*://*.udemy.com/*"]
   },
   ["blocking"]
 );
