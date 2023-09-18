@@ -33,7 +33,7 @@ chrome.webRequest.onBeforeRequest.addListener(
         if (speeds) {
           var script = await fetch(details.url + "?giveOrig=true" + "&rnd=" + noCache);
           await chrome.storage.local.set({
-            modifiedScript: (await script.text()).replace("[.5,.75,1,1.25,1.5,1.75,2]", "[" + speeds + "]"),
+            modifiedScript: (await script.text()).replace(/\[\.5,\.75,1,1\.25,1\.5,1\.75,2\]/g, "[" + speeds + "]"),
             ogScriptSrc: details.url.split('udemy.com')[1],
             needsRefresh: false
           });
