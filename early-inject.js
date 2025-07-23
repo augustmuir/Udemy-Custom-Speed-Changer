@@ -47,7 +47,7 @@
       s.textContent = code;
       document.head.appendChild(s);
     } catch (err) {
-      console.error("HIIII Failed to patch Udemy player:", err);
+      console.log("Failed to patch Udemy script:", err);
     }
   }
 })();
