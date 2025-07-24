@@ -1,16 +1,14 @@
 (function () {
-  const defaultSpeeds = [
-    0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 5, 7.5, 10, 13, 16,
-  ];
+  const defaultSpeeds = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 5, 7.5, 10, 13, 16];
   let userSpeeds = defaultSpeeds;
-
   try {
-    window.chrome?.storage?.sync.get("udemyChangerSpeeds", (data) => {
-      if (Array.isArray(data.udemyChangerSpeeds)) {
-        userSpeeds = data.udemyChangerSpeeds;
+      const stored = window.localStorage.getItem('udemyChangerSpeeds');
+      if (stored) {
+          const arr = JSON.parse(stored);
+          if (Array.isArray(arr)) userSpeeds = arr.map(Number);
       }
-    });
   } catch (e) {}
+
 
   const originalCreateElement = Document.prototype.createElement;
   Document.prototype.createElement = function (tagName, options) {
