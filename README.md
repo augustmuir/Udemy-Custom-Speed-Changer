@@ -8,7 +8,7 @@ You must clear the cache for the video player on first use. Either do a hard ref
 
 This only supports the desktop video player (which shows the current speed on the bottom toolbar near the play button).  
 
-![Screenshot](/media/screenshot.jpg)
+![Screenshot](/media/screenshot.png)
 
 If you're curious how it works: 
 
