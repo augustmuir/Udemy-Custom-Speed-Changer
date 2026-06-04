@@ -3,10 +3,7 @@
   "name": "Udemy Custom Speed Changer",
   "description": "Change Udemy's video player to allow any custom speed.",
   "version": "2.1.7",
-  "permissions": ["storage", "scripting", "webNavigation"],
-  "background": {
-	"service_worker": "background.js"
-  },
+  "permissions": ["storage"],
   "web_accessible_resources": [
   {
     "resources": ["early-inject.js"],
