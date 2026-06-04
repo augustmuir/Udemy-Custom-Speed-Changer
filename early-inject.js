@@ -16,8 +16,8 @@
 
     Object.defineProperty(el, "src", {
       set(value) {
-        if (/.*course-taking.*\.js/.test(value)) {
-          fetchAndInjectModifiedScript(value);
+        if (/\.js(\?.*)?$/.test(value)) {
+          fetchAndInjectModifiedScript(value, el);
           return;
         }
         this.setAttribute("src", value);
@@ -31,21 +31,26 @@
     return el;
   };
 
-  async function fetchAndInjectModifiedScript(src) {
+  async function fetchAndInjectModifiedScript(src, el) {
     try {
       const response = await fetch(src);
-      let code = await response.text();
+      const code = await response.text();
 
-      code = code.replace(
-        /\[\.5,\.75,1,1\.25,1\.5,1\.75,2\]/g,
+      const patched = code.replace(
+        /\[0?\.5,0?\.75,1,1\.25,1\.5,1\.75,2\]/g,
         `[${userSpeeds.join(",")}]`
       );
 
-      const s = document.createElement("script");
-      s.textContent = code;
-      document.head.appendChild(s);
+      if (patched !== code) {
+        const s = document.createElement("script");
+        s.textContent = patched;
+        document.head.appendChild(s);
+      } else {
+        el.setAttribute("src", src);
+      }
     } catch (err) {
       console.log("Failed to patch Udemy script:", err);
+      el.setAttribute("src", src);
     }
   }
 })();
